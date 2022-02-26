@@ -84,7 +84,7 @@ class ApiController extends Controller
 
             $query = "SELECT * FROM qmovements_bolsamza WHERE
             (action_text IN ('LLAMADA','FINALIZACION'))
-            AND date(action_time) = :p0";
+            AND action_time = :p0";
 
             if ($branch_name) {
                 $params[':p1'] = $branch_name;
@@ -92,7 +92,7 @@ class ApiController extends Controller
             }
             $result = Yii::$app->db->createCommand($query, $params)->queryAll();
         } catch (Exception $exception) {
-            throw  new NotFoundHttpException('Ocurrió un error al ejecutar la consulta en la base de datos.');
+            throw  new NotFoundHttpException('Ocurrió un error al ejecutar la consulta en la base de datos.'.$exception->getMessage());
         }
         return $result;
     }
