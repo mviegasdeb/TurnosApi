@@ -84,7 +84,7 @@ class ApiController extends Controller
 
             $query = "SELECT * FROM qmovements_bolsamza WHERE
             (action_text IN ('LLAMADA','FINALIZACION'))
-            AND action_time = :p0";
+            AND CONVERT(DATE, action_time) = :p0";
 
             if ($branch_name) {
                 $params[':p1'] = $branch_name;
