@@ -68,14 +68,14 @@ class ApiController extends Controller
 
     public function actionGetMovements($date = null, $branch_name = null)
     {
-//        $query = "SELECT * FROM qmovements_bolsamza WHERE
-//            (action_text IN ('LLAMADA','FINALIZACION'))
-//            AND month(action_time) = 10
-//            AND day(action_time) = 27
-//            AND year(action_time) = 2021";
-//        $result = Yii::$app->db->createCommand($query)->queryAll();
+        $query = "SELECT * FROM qmovements_bolsamza WHERE
+            (action_text IN ('LLAMADA','FINALIZACION'))
+            AND month(action_time) = 10
+            AND day(action_time) = 27
+            AND year(action_time) = 2021";
+        $result = Yii::$app->db->createCommand($query)->queryAll();
 
-        return $branch_name;
+        return $result;
     }
 
 }
