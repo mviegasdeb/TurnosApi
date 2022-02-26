@@ -80,17 +80,16 @@ class ApiController extends Controller
     {
         try {
             $params = [];
-            $params[] = [':p0' => $date];
+            $params[':p0'] = $date;
 
             $query = "SELECT * FROM qmovements_bolsamza WHERE
             (action_text IN ('LLAMADA','FINALIZACION'))
             AND date(action_time) = :p0";
 
             if ($branch_name) {
-                $params[] = [':p1' => $branch_name];
+                $params[':p1'] = $branch_name;
                 $query .= ' AND branch_name = :p1';
             }
-
             $result = Yii::$app->db->createCommand($query, $params)->queryAll();
         } catch (Exception $exception) {
             throw  new NotFoundHttpException('Ocurrió un error al ejecutar la consulta en la base de datos.');
