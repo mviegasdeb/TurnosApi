@@ -3,11 +3,15 @@
 namespace app\controllers;
 
 use app\models\User;
+use HttpInvalidParamException;
 use Yii;
+use yii\db\DataReader;
+use yii\db\Exception;
 use yii\filters\AccessControl;
 use yii\filters\auth\HttpBasicAuth;
 use yii\rest\Controller;
 use yii\web\ForbiddenHttpException;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\web\UnauthorizedHttpException;
 
@@ -66,15 +70,31 @@ class ApiController extends Controller
         return $behaviors;
     }
 
-    public function actionGetMovements($date = null, $branch_name = null)
+    /**
+     * @param $date
+     * @param null $branch_name
+     * @return array|DataReader
+     * @throws NotFoundHttpException
+     */
+    public function actionGetMovements($date, $branch_name = null)
     {
-        $query = "SELECT * FROM qmovements_bolsamza WHERE
-            (action_text IN ('LLAMADA','FINALIZACION'))
-            AND month(action_time) = 10
-            AND day(action_time) = 27
-            AND year(action_time) = 2021";
-        $result = Yii::$app->db->createCommand($query)->queryAll();
+        try {
+            $params = [];
+            $params[] = [':p0' => $date];
 
+            $query = "SELECT * FROM qmovements_bolsamza WHERE
+            (action_text IN ('LLAMADA','FINALIZACION'))
+            AND date(action_time) = :p0";
+
+            if ($branch_name) {
+                $params[] = [':p1' => $branch_name];
+                $query .= ' AND branch_name = :p1';
+            }
+
+            $result = Yii::$app->db->createCommand($query, $params)->queryAll();
+        } catch (Exception $exception) {
+            throw  new NotFoundHttpException('Ocurrió un error al ejecutar la consulta en la base de datos.');
+        }
         return $result;
     }
 
