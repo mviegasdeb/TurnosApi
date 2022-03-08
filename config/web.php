@@ -47,6 +47,7 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'get-movements' => 'api/get-movements',
             ],
         ],
     ],
