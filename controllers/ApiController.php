@@ -18,7 +18,6 @@ use yii\web\UnauthorizedHttpException;
 class ApiController extends Controller
 {
 
-    public $defaultAction = 'get-movements';
     const AUTH_USERNAME = 'demo';
     const AUTH_PASSWORD = 'demopsw';
     public $enableCsrfValidation = false;
@@ -55,7 +54,7 @@ class ApiController extends Controller
             'class' => AccessControl::class,
             'rules' => [
                 [
-                    'actions' => ['get-movements'],
+                    'actions' => ['index', 'get-movements'],
                     'allow' => true,
                     'roles' => ['@']
                 ],
@@ -69,6 +68,10 @@ class ApiController extends Controller
             }
         ];
         return $behaviors;
+    }
+
+    public function actionIndex(){
+        return "BCM-API";
     }
 
     /**
