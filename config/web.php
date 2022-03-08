@@ -43,7 +43,6 @@ $config = [
             ],
         ],
         'db' => $db,
-
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
@@ -52,6 +51,7 @@ $config = [
         ],
     ],
     'params' => $params,
+    'defaultRoute' => 'api',
 ];
 
 if (YII_ENV_DEV) {

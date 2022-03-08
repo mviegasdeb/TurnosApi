@@ -18,6 +18,7 @@ use yii\web\UnauthorizedHttpException;
 class ApiController extends Controller
 {
 
+    public $defaultAction = 'get-movements';
     const AUTH_USERNAME = 'demo';
     const AUTH_PASSWORD = 'demopsw';
     public $enableCsrfValidation = false;
