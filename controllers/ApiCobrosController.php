@@ -25,12 +25,12 @@ class ApiCobrosController extends Controller
     const AUTH_USERNAME = 'demo';
     const AUTH_PASSWORD = 'demopsw';
     const END_POINT_URL = 'http://debqclients.debmedia.com/api/';
-    const END_POINT_PASS = 'bolsamza';
-    const END_POINT_TOKEN = 'e8c688174cfd4ec8ab50220956d738cc';
-    const END_POINT_EMAIL = 'api.bolsamza@bolsamza.com';
+    const END_POINT_PASS = 'Admin$123';
+    const END_POINT_TOKEN = '4db8055944a5423f9811c35c26492bb7';
+    const END_POINT_EMAIL = 'admin.bolsamza@bolsamza.com.ar';
     const END_POINT_COOKIE_SESSION_NAME = 'PLAY_SESSION';
-
     public $enableCsrfValidation = false;
+    private $sede = null;
 
     public function init()
     {
@@ -91,13 +91,13 @@ class ApiCobrosController extends Controller
     public function actionGetActualTurn(int $id)
     {
         $user = $this->getUserById($id);
-        if (!$user) {
+        if (!$user || !array_key_exists('sede', $user)) {
             return [
-                'message' => 'No se encontró el usuario en el archivo json',
+                'message' => !$user ? 'No se encontró el usuario en el archivo json' : 'No se encontró la sede del usuario en el archivo json',
                 'data' => null
             ];
         }
-
+        $this->sede = $user['sede'];
         $actualUser = $this->findActualUser($this->requestWorkers(), $user);
         if (!$actualUser) {
             return [
@@ -215,7 +215,8 @@ class ApiCobrosController extends Controller
                 ->setData([
                     'email' => self::END_POINT_EMAIL,
                     'password' => self::END_POINT_PASS,
-                    'token' => self::END_POINT_TOKEN
+                    'token' => self::END_POINT_TOKEN,
+                    'branch.id' => $this->sede
                 ])
                 ->send();
             $newCookie = $response->getCookies()->get(self::END_POINT_COOKIE_SESSION_NAME);
